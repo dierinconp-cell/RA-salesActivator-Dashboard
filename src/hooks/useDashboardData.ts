@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabaseExternal } from "@/lib/supabaseExternal";
 
 interface Agent {
   id: string;
@@ -34,7 +34,7 @@ export const useAgents = () => {
   return useQuery({
     queryKey: ["agents"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseExternal
         .from("commercial_agents")
         .select("id, full_name")
         .order("full_name", { ascending: true });
@@ -52,10 +52,10 @@ export const useKPIData = (agentId: string | null) => {
       if (!agentId) return null;
 
       // Query the pre-calculated view
-      const { data: results, error: resultsError } = await supabase
-        .from("vista_resultados_detallados" as any)
+      const { data: results, error: resultsError } = await supabaseExternal
+        .from("vista_resultados_detallados")
         .select("*")
-        .eq("commercial_agent_id", agentId) as any;
+        .eq("commercial_agent_id", agentId);
 
       if (resultsError) throw resultsError;
 
@@ -109,10 +109,10 @@ export const usePerformanceEvolution = (agentId: string | null) => {
       if (!agentId) return [];
 
       // Query the pre-calculated view
-      const { data: results, error: resultsError } = await supabase
-        .from("vista_resultados_detallados" as any)
+      const { data: results, error: resultsError } = await supabaseExternal
+        .from("vista_resultados_detallados")
         .select("*")
-        .eq("commercial_agent_id", agentId) as any;
+        .eq("commercial_agent_id", agentId);
 
       if (resultsError) throw resultsError;
 
@@ -158,10 +158,10 @@ export const useSkillsAnalysis = (agentId: string | null) => {
       if (!agentId) return { strengths: [], opportunities: [] };
 
       // Query the pre-calculated view
-      const { data: results, error: resultsError } = await supabase
-        .from("vista_resultados_detallados" as any)
+      const { data: results, error: resultsError } = await supabaseExternal
+        .from("vista_resultados_detallados")
         .select("*")
-        .eq("commercial_agent_id", agentId) as any;
+        .eq("commercial_agent_id", agentId);
 
       if (resultsError) throw resultsError;
 
@@ -207,10 +207,10 @@ export const useMeetingsHistory = (agentId: string | null) => {
       if (!agentId) return [];
 
       // Query the pre-calculated view
-      const { data: results, error: resultsError } = await supabase
-        .from("vista_resultados_detallados" as any)
+      const { data: results, error: resultsError } = await supabaseExternal
+        .from("vista_resultados_detallados")
         .select("*")
-        .eq("commercial_agent_id", agentId) as any;
+        .eq("commercial_agent_id", agentId);
 
       if (resultsError) throw resultsError;
 

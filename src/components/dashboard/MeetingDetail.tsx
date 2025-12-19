@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabaseExternal } from "@/lib/supabaseExternal";
 import { CheckCircle2, XCircle, BarChart3, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,8 +16,8 @@ export const MeetingDetail = ({ sessionId, open, onClose }: MeetingDetailProps) 
   const { data: details, isLoading } = useQuery({
     queryKey: ["meeting-detail", sessionId],
     queryFn: async () => {
-      const { data: results, error } = await supabase
-        .from("vista_resultados_detallados" as any)
+      const { data: results, error } = await supabaseExternal
+        .from("vista_resultados_detallados")
         .select("*")
         .eq("analysis_session_id", sessionId) as any;
 
